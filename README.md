@@ -1,11 +1,11 @@
 space-invaders-opengl
 =====================
 
-Demonstrates how to use java for hardware accelerated graphics using the OpenGL standard via the [LWJGL](http://www.lwjgl.org/) java wrapper.
+Demonstrates how to use java for hardware accelerated graphics using the [OpenGL](http://www.opengl.org/) standard via the [LWJGL](http://www.lwjgl.org/) java wrapper.
 
-The source code originated [here](http://www.lwjgl.org/wiki/index.php?title=Space_Invaders_Example_Game) and was playable (via webstart) and viewable but not convenient for import into an IDE.
+The source code originated [here](http://www.lwjgl.org/wiki/index.php?title=Space_Invaders_Example_Game) but was not in a useful form to experiment with so this project was created.
 
-<img src="https://raw.github.com/davidmoten/space-invaders-opengl/master/docs/screensnap.png"/>
+<img src="https://raw.github.com/davidmoten/space-invaders-opengl/master/docs/screensnap.png" height="500"/>
 
 Getting started
 ----------------------
