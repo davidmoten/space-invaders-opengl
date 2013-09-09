@@ -7,6 +7,7 @@ import javax.swing.SwingUtilities;
 
 public class GameFrame extends JFrame {
 
+	private static final long serialVersionUID = 3243493114596654127L;
 	private static final String LWJGL_LIBRARY_PATH = "org.lwjgl.librarypath";
 	private final GameCore core;
 
