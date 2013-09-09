@@ -242,7 +242,8 @@ public class Game implements Runnable {
 			Display.setFullscreen(fullscreen);
 			Display.create();
 
-			// grab the mouse, dont want that hideous cursor when we're playing!
+			// grab the mouse, don't want that hideous cursor when we're
+			// playing!
 			if (isApplication) {
 				Mouse.setGrabbed(true);
 			}
@@ -271,12 +272,13 @@ public class Game implements Runnable {
 			soundManager = new SoundManager();
 			soundManager.initialize(8);
 
-			// load our sound data
-			soundShot = soundManager.addSound("spaceinvaders/sound/shot.wav");
-			soundHit = soundManager.addSound("spaceinvaders/sound/hit.wav");
-			soundStart = soundManager.addSound("spaceinvaders/sound/start.wav");
-			soundWin = soundManager.addSound("spaceinvaders/sound/win.wav");
-			soundLose = soundManager.addSound("spaceinvaders/sound/lose.wav");
+			// load sound data
+			String base = "spaceinvaders/sound/";
+			soundShot = soundManager.addSound(base + "shot.wav");
+			soundHit = soundManager.addSound(base + "hit.wav");
+			soundStart = soundManager.addSound(base + "start.wav");
+			soundWin = soundManager.addSound(base + "win.wav");
+			soundLose = soundManager.addSound(base + "lose.wav");
 		} catch (LWJGLException le) {
 			System.out.println("Game exiting - exception in initialization:");
 			le.printStackTrace();
@@ -284,7 +286,7 @@ public class Game implements Runnable {
 			return;
 		}
 
-		// get our sprites
+		// get sprites
 		gotYou = getSprite("gotyou.gif");
 		pressAnyKey = getSprite("pressanykey.gif");
 		youWin = getSprite("youwin.gif");
@@ -637,21 +639,6 @@ public class Game implements Runnable {
 	}
 
 	/**
-	 * The entry point into the game. We'll simply create an instance of class
-	 * which will start the display and game loop.
-	 * 
-	 * @param argv
-	 *            The arguments that are passed into our game
-	 */
-	public static void main(String argv[]) {
-		isApplication = true;
-		System.out.println("Use -fullscreen for fullscreen mode");
-		new Game((argv.length > 0 && "-fullscreen".equalsIgnoreCase(argv[0])))
-				.run();
-		System.exit(0);
-	}
-
-	/**
 	 *
 	 */
 	@Override
@@ -669,5 +656,20 @@ public class Game implements Runnable {
 	 */
 	public Sprite getSprite(String ref) {
 		return new Sprite(textureLoader, "spaceinvaders/image/" + ref);
+	}
+
+	/**
+	 * The entry point into the game. We'll simply create an instance of class
+	 * which will start the display and game loop.
+	 * 
+	 * @param argv
+	 *            The arguments that are passed into our game
+	 */
+	public static void main(String argv[]) {
+		isApplication = true;
+		System.out.println("Use -fullscreen for fullscreen mode");
+		new Game((argv.length > 0 && "-fullscreen".equalsIgnoreCase(argv[0])))
+				.run();
+		System.exit(0);
 	}
 }
