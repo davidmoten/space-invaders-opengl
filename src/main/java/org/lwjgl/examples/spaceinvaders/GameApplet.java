@@ -41,7 +41,7 @@ public class GameApplet extends Applet {
 	private final GameCore core;
 
 	public GameApplet() {
-		core = new GameCore(this);
+		core = new GameCore(this, false);
 	}
 
 	/**

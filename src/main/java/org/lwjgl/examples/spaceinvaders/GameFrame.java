@@ -11,10 +11,10 @@ public class GameFrame extends JFrame {
 	private static final String LWJGL_LIBRARY_PATH = "org.lwjgl.librarypath";
 	private final GameCore core;
 
-	public GameFrame() {
+	public GameFrame(boolean fullScreen) {
 		setTitle("Space Invaders");
 		setSize(800, 600);
-		core = new GameCore(getContentPane());
+		core = new GameCore(getContentPane(), fullScreen);
 	}
 
 	public void start() {
@@ -29,7 +29,7 @@ public class GameFrame extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				GameFrame frame = new GameFrame();
+				GameFrame frame = new GameFrame(false);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setVisible(true);
 				frame.start();

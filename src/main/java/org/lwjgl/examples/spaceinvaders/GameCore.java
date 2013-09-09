@@ -20,8 +20,11 @@ public class GameCore {
 	/** The Game instance */
 	private Game game;
 
-	public GameCore(Container component) {
+	private final boolean fullScreen;
+
+	public GameCore(Container component, boolean fullScreen) {
 		this.container = component;
+		this.fullScreen = fullScreen;
 	}
 
 	public Canvas getDisplayParent() {
@@ -74,7 +77,7 @@ public class GameCore {
 					e.printStackTrace();
 				}
 				// start game
-				game = new Game(false);
+				game = new Game(fullScreen);
 				game.execute();
 			}
 		};
