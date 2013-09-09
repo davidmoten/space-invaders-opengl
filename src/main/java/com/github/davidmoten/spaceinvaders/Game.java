@@ -483,10 +483,13 @@ public class Game implements Runnable {
 		// update our FPS counter if a second has passed
 		updateFramesPerSecondCounter();
 
+		// move entities by time delta
 		moveEntities(delta);
 
+		// draw the entities using OpenGL
 		drawEntities();
 
+		// detect and handle all entity collisions
 		handleEntityCollisions();
 
 		// if a game event has indicated that game logic should
@@ -494,8 +497,10 @@ public class Game implements Runnable {
 		// their personal logic should be considered.
 		doEntityLogic();
 
-		drawWaitingForAnyKeyPress();
+		// draw message like for example "Press any key to start"
+		drawMessage();
 
+		// process key presses and mouse movements and presses
 		handleKeyboardAndMouseInput();
 	}
 
@@ -517,7 +522,7 @@ public class Game implements Runnable {
 		}
 	}
 
-	private void drawWaitingForAnyKeyPress() {
+	private void drawMessage() {
 		// if we're waiting for an "any key" press then draw the
 		// current message
 		if (waitingForKeyPress) {
