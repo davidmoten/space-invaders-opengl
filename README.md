@@ -17,6 +17,7 @@ To run as an application from the command line:
     mvn test exec:java
     
 To start full screen:
+
     mvn test exec:java -DfullScreen=true
     
 To run in Eclipse as an applet:
