@@ -16,7 +16,7 @@ To run as an application from the command line:
     cd space-invaders-opengl
     mvn test exec:java
     
-To start full screen:
+To start full screen (texture mapping is cool!):
 
     mvn test exec:java -DfullScreen=true
     
