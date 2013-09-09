@@ -14,7 +14,7 @@ public class GameFrame extends JFrame {
 	private static final String LWJGL_LIBRARY_PATH = "org.lwjgl.librarypath";
 	private final GameCore core;
 
-	public GameFrame(boolean fullScreen) {
+	public GameFrame() {
 		setTitle("Space Invaders");
 		setSize(800, 600);
 		GameFactory gameFactory = new GameFactory() {
@@ -39,10 +39,11 @@ public class GameFrame extends JFrame {
 			System.setProperty(LWJGL_LIBRARY_PATH,
 					new File("target/natives").getAbsolutePath());
 
+		// new Game(false).run();
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				GameFrame frame = new GameFrame(false);
+				GameFrame frame = new GameFrame();
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setVisible(true);
 				frame.start();
