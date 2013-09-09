@@ -10,13 +10,14 @@ The source code originated [here](http://www.lwjgl.org/wiki/index.php?title=Spac
 Getting started
 ----------------------
 
-To run as an application from the command line:
+To run from the command line:
 
     git clone https://github.com/davidmoten/space-invaders-opengl.git
     cd space-invaders-opengl
     mvn test exec:java
     
-To start full screen:
+To start full screen (texture mapping is cool!):
+
     mvn test exec:java -DfullScreen=true
     
 To run in Eclipse as an applet:
