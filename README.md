@@ -1,7 +1,9 @@
 space-invaders-opengl
 =====================
 
-Copied from http://www.lwjgl.org/wiki/index.php?title=Space_Invaders_Example_Game. These classes were all listed on a website individually with no easy way to play with the project in an IDE so I made this project.
+Copied from http://www.lwjgl.org/wiki/index.php?title=Space_Invaders_Example_Game. These classes were all listed on a website individually with no easy way to muck around with the project in an IDE so I made this project.
+
+<img src="https://raw.github.com/davidmoten/space-invaders-opengl/master/docs/screensnap.png"/>
 
 Getting started
 ----------------------
