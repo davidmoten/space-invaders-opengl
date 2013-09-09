@@ -1,9 +1,11 @@
-package org.lwjgl.examples.spaceinvaders;
+package com.github.davidmoten.spaceinvaders;
 
 import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+
+import com.github.davidmoten.lwjgl.GameCore;
 
 public class GameFrame extends JFrame {
 

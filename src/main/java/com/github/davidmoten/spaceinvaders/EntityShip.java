@@ -29,7 +29,9 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lwjgl.examples.spaceinvaders;
+package com.github.davidmoten.spaceinvaders;
+
+import com.github.davidmoten.lwjgl.Entity;
 
 /**
  * The entity that represents the players ship
@@ -37,7 +39,7 @@ package org.lwjgl.examples.spaceinvaders;
  * @author Kevin Glass
  * @author Brian Matzon
  */
-public class ShipEntity extends Entity {
+public class EntityShip extends Entity {
 
 	/** Right border at which to disallow further movement */
 	private static final int RIGHT_BORDER = 750;
@@ -60,7 +62,7 @@ public class ShipEntity extends Entity {
 	 * @param y
 	 *            The initial y location of the player's ship
 	 */
-	public ShipEntity(Game game, String ref, int x, int y) {
+	public EntityShip(Game game, String ref, int x, int y) {
 		super(game.getSprite(ref), x, y);
 
 		this.game = game;
@@ -98,7 +100,7 @@ public class ShipEntity extends Entity {
 	public void collidedWith(Entity other) {
 		// if its an alien, notify the game that the player
 		// is dead
-		if (other instanceof AlienEntity) {
+		if (other instanceof EntityAlien) {
 			game.notifyDeath();
 		}
 	}

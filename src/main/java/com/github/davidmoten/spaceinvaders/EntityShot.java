@@ -29,7 +29,9 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lwjgl.examples.spaceinvaders;
+package com.github.davidmoten.spaceinvaders;
+
+import com.github.davidmoten.lwjgl.Entity;
 
 /**
  * An entity representing a shot fired by the player's ship
@@ -37,7 +39,7 @@ package org.lwjgl.examples.spaceinvaders;
  * @author Kevin Glass
  * @author Brian Matzon
  */
-public class ShotEntity extends Entity {
+public class EntityShot extends Entity {
 
 	/** Top border at which shots are outside */
 	private static final int TOP_BORDER = -100;
@@ -63,7 +65,7 @@ public class ShotEntity extends Entity {
 	 * @param y
 	 *            The initial y location of the shot
 	 */
-	public ShotEntity(Game game, String sprite, int x, int y) {
+	public EntityShot(Game game, String sprite, int x, int y) {
 		super(game.getSprite(sprite), x, y);
 
 		this.game = game;
@@ -116,7 +118,7 @@ public class ShotEntity extends Entity {
 		}
 
 		// if we've hit an alien, kill it!
-		if (other instanceof AlienEntity) {
+		if (other instanceof EntityAlien) {
 			// remove the affected entities
 			game.removeEntity(this);
 			game.removeEntity(other);

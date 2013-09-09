@@ -29,7 +29,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lwjgl.examples.spaceinvaders;
+package com.github.davidmoten.lwjgl;
 
 import static org.lwjgl.opengl.GL11.glBindTexture;
 

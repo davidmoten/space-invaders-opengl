@@ -29,7 +29,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lwjgl.examples.spaceinvaders;
+package com.github.davidmoten.lwjgl;
 
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.glBegin;
@@ -41,6 +41,7 @@ import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 
 import java.io.IOException;
+
 
 /**
  * Implementation of sprite that uses an OpenGL quad and a texture to render a
@@ -70,7 +71,7 @@ public class Sprite {
 	 */
 	public Sprite(TextureLoader loader, String ref) {
 		try {
-			texture = loader.getTexture("spaceinvaders/" + ref);
+			texture = loader.getTexture(ref);
 			width = texture.getImageWidth();
 			height = texture.getImageHeight();
 		} catch (IOException ioe) {

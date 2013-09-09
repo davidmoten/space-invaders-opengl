@@ -29,7 +29,10 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lwjgl.examples.spaceinvaders;
+package com.github.davidmoten.spaceinvaders;
+
+import com.github.davidmoten.lwjgl.Entity;
+import com.github.davidmoten.lwjgl.Sprite;
 
 /**
  * An entity which represents one of our space invader aliens.
@@ -37,7 +40,7 @@ package org.lwjgl.examples.spaceinvaders;
  * @author Kevin Glass
  * @author Brian Matzon
  */
-public class AlienEntity extends Entity {
+public class EntityAlien extends Entity {
 
 	/** Movement made downwards when a border is hit */
 	private static final int DOWNWARD_MOVEMENT = 10;
@@ -82,7 +85,7 @@ public class AlienEntity extends Entity {
 	 * @param y
 	 *            The intial y location of this alient
 	 */
-	public AlienEntity(Game game, int x, int y) {
+	public EntityAlien(Game game, int x, int y) {
 		super(game.getSprite("alien.gif"), x, y);
 
 		// setup the animatin frames

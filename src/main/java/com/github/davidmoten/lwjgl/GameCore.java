@@ -1,4 +1,4 @@
-package org.lwjgl.examples.spaceinvaders;
+package com.github.davidmoten.lwjgl;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
@@ -6,6 +6,8 @@ import java.awt.Container;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
+
+import com.github.davidmoten.spaceinvaders.Game;
 
 public class GameCore {
 

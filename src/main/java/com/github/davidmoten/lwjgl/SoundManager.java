@@ -29,7 +29,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lwjgl.examples.spaceinvaders;
+package com.github.davidmoten.lwjgl;
 
 import java.nio.IntBuffer;
 
@@ -162,7 +162,7 @@ public class SoundManager {
 		buffers[bufferIndex] = scratchBuffer.get(0);
 
 		// load wave data from buffer
-		WaveData wavefile = WaveData.create("spaceinvaders/" + path);
+		WaveData wavefile = WaveData.create(path);
 
 		// copy to buffers
 		AL10.alBufferData(buffers[bufferIndex], wavefile.format, wavefile.data,

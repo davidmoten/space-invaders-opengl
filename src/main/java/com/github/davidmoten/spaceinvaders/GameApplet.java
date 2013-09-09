@@ -30,9 +30,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lwjgl.examples.spaceinvaders;
+package com.github.davidmoten.spaceinvaders;
 
 import java.applet.Applet;
+
+import com.github.davidmoten.lwjgl.GameCore;
 
 public class GameApplet extends Applet {
 

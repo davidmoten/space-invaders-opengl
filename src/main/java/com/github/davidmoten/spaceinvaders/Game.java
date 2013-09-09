@@ -29,7 +29,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lwjgl.examples.spaceinvaders;
+package com.github.davidmoten.spaceinvaders;
 
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
@@ -53,6 +53,11 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+
+import com.github.davidmoten.lwjgl.Entity;
+import com.github.davidmoten.lwjgl.SoundManager;
+import com.github.davidmoten.lwjgl.Sprite;
+import com.github.davidmoten.lwjgl.TextureLoader;
 
 /**
  * The main hook of our game. This class with both act as a manager for the
@@ -101,10 +106,10 @@ public class Game {
 	private final ArrayList<Entity> removeList = new ArrayList<Entity>();
 
 	/** The entity representing the player */
-	private ShipEntity ship;
+	private EntityShip ship;
 
 	/** List of shots */
-	private ShotEntity[] shots;
+	private EntityShot[] shots;
 
 	/** The message to display which waiting for a key press */
 	private Sprite message;
@@ -267,11 +272,11 @@ public class Game {
 			soundManager.initialize(8);
 
 			// load our sound data
-			soundShot = soundManager.addSound("shot.wav");
-			soundHit = soundManager.addSound("hit.wav");
-			soundStart = soundManager.addSound("start.wav");
-			soundWin = soundManager.addSound("win.wav");
-			soundLose = soundManager.addSound("lose.wav");
+			soundShot = soundManager.addSound("spaceinvaders/shot.wav");
+			soundHit = soundManager.addSound("spaceinvaders/hit.wav");
+			soundStart = soundManager.addSound("spaceinvaders/start.wav");
+			soundWin = soundManager.addSound("spaceinvaders/win.wav");
+			soundLose = soundManager.addSound("spaceinvaders/lose.wav");
 		} catch (LWJGLException le) {
 			System.out.println("Game exiting - exception in initialization:");
 			le.printStackTrace();
@@ -287,9 +292,9 @@ public class Game {
 		message = pressAnyKey;
 
 		// setup 5 shots
-		shots = new ShotEntity[5];
+		shots = new EntityShot[5];
 		for (int i = 0; i < shots.length; i++) {
-			shots[i] = new ShotEntity(this, "shot.gif", 0, 0);
+			shots[i] = new EntityShot(this, "shot.gif", 0, 0);
 		}
 
 		// setup the initial game state
@@ -339,14 +344,14 @@ public class Game {
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the
 		// screen
-		ship = new ShipEntity(this, "ship.gif", 370, 550);
+		ship = new EntityShip(this, "ship.gif", 370, 550);
 		entities.add(ship);
 
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
 		alienCount = 0;
 		for (int row = 0; row < 5; row++) {
 			for (int x = 0; x < 12; x++) {
-				Entity alien = new AlienEntity(this, 100 + (x * 50),
+				Entity alien = new EntityAlien(this, 100 + (x * 50),
 						(50) + row * 30);
 				entities.add(alien);
 				alienCount++;
@@ -408,7 +413,7 @@ public class Game {
 		// so
 		// speed up all the existing aliens
 		for (Entity entity : entities) {
-			if (entity instanceof AlienEntity) {
+			if (entity instanceof EntityAlien) {
 				// speed up by 2%
 				entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.02f);
 			}
@@ -431,7 +436,7 @@ public class Game {
 		// if we waited long enough, create the shot entity, and record the
 		// time.
 		lastFire = System.currentTimeMillis();
-		ShotEntity shot = shots[shotIndex++ % shots.length];
+		EntityShot shot = shots[shotIndex++ % shots.length];
 		shot.reinitialize(ship.getX() + 10, ship.getY() - 30);
 		entities.add(shot);
 
@@ -450,7 +455,7 @@ public class Game {
 			glLoadIdentity();
 
 			// let subsystem paint
-			frameRendering();
+			renderFrame();
 
 			// update window contents
 			Display.update();
@@ -465,82 +470,70 @@ public class Game {
 	 * Notification that a frame is being rendered. Responsible for running game
 	 * logic and rendering the scene.
 	 */
-	public void frameRendering() {
-		// SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
+	public void renderFrame() {
 		Display.sync(60);
 
 		// work out how long its been since the last update, this
 		// will be used to calculate how far the entities should
 		// move this loop
+		long delta = calculateTimeDelta();
+
+		// update our FPS counter if a second has passed
+		updateFramesPerSecondCounter();
+
+		moveEntities(delta);
+
+		drawEntities();
+
+		handleEntityCollisions();
+
+		// if a game event has indicated that game logic should
+		// be resolved, cycle round every entity requesting that
+		// their personal logic should be considered.
+		doEntityLogic();
+
+		drawWaitingForAnyKeyPress();
+
+		handleKeyboardAndMouseInput();
+	}
+
+	private long calculateTimeDelta() {
 		long delta = getTime() - lastLoopTime;
 		lastLoopTime = getTime();
 		lastFpsTime += delta;
 		fps++;
 
-		// update our FPS counter if a second has passed
-		if (lastFpsTime >= 1000) {
-			Display.setTitle(WINDOW_TITLE + " (FPS: " + fps + ")");
-			lastFpsTime = 0;
-			fps = 0;
-		}
+		return delta;
+	}
 
-		// cycle round asking each entity to move itself
-		if (!waitingForKeyPress && !soundManager.isPlayingSound()) {
-			for (Entity entity : entities) {
-				entity.move(delta);
-			}
-		}
-
-		// cycle round drawing all the entities we have in the game
-		for (Entity entity : entities) {
-			entity.draw();
-		}
-
-		// brute force collisions, compare every entity against
-		// every other entity. If any of them collide notify
-		// both entities that the collision has occured
-		for (int p = 0; p < entities.size(); p++) {
-			for (int s = p + 1; s < entities.size(); s++) {
-				Entity me = entities.get(p);
-				Entity him = entities.get(s);
-
-				if (me.collidesWith(him)) {
-					me.collidedWith(him);
-					him.collidedWith(me);
-				}
-			}
-		}
-
-		// remove any entity that has been marked for clear up
-		entities.removeAll(removeList);
-		removeList.clear();
-
-		// if a game event has indicated that game logic should
-		// be resolved, cycle round every entity requesting that
-		// their personal logic should be considered.
+	private void doEntityLogic() {
 		if (logicRequiredThisLoop) {
 			for (Entity entity : entities) {
 				entity.doLogic();
 			}
-
 			logicRequiredThisLoop = false;
 		}
+	}
 
+	private void drawWaitingForAnyKeyPress() {
 		// if we're waiting for an "any key" press then draw the
 		// current message
 		if (waitingForKeyPress) {
 			message.draw(325, 250);
 		}
+	}
 
-		// resolve the movemfent of the ship. First assume the ship
-		// isn't moving. If either cursor key is pressed then
-		// update the movement appropraitely
-		ship.setHorizontalMovement(0);
+	private void handleKeyboardAndMouseInput() {
 
 		// get mouse movement on x axis. We need to get it now, since
 		// we can only call getDX ONCE! - secondary calls will yield 0, since
 		// there haven't been any movement since last call.
 		mouseX = Mouse.getDX();
+
+		// resolve the movement of the ship. First assume the ship
+		// isn't moving. If either cursor key is pressed then
+		// update the movement appropraitely
+		ship.setHorizontalMovement(0);
 
 		// we delegate input checking to submethod since we want to check
 		// for keyboard, mouse & controller
@@ -576,6 +569,51 @@ public class Game {
 		if ((Display.isCloseRequested() || Keyboard
 				.isKeyDown(Keyboard.KEY_ESCAPE)) && isApplication) {
 			Game.gameRunning = false;
+		}
+	}
+
+	private void handleEntityCollisions() {
+		// brute force collisions, compare every entity against
+		// every other entity. If any of them collide notify
+		// both entities that the collision has occured
+		for (int p = 0; p < entities.size(); p++) {
+			for (int s = p + 1; s < entities.size(); s++) {
+				Entity me = entities.get(p);
+				Entity him = entities.get(s);
+
+				if (me.collidesWith(him)) {
+					me.collidedWith(him);
+					him.collidedWith(me);
+				}
+			}
+		}
+
+		// remove any entity that has been marked for clear up
+		entities.removeAll(removeList);
+		removeList.clear();
+	}
+
+	private void drawEntities() {
+		// cycle round drawing all the entities we have in the game
+		for (Entity entity : entities) {
+			entity.draw();
+		}
+	}
+
+	private void moveEntities(long delta) {
+		// cycle round asking each entity to move itself
+		if (!waitingForKeyPress && !soundManager.isPlayingSound()) {
+			for (Entity entity : entities) {
+				entity.move(delta);
+			}
+		}
+	}
+
+	private void updateFramesPerSecondCounter() {
+		if (lastFpsTime >= 1000) {
+			Display.setTitle(WINDOW_TITLE + " (FPS: " + fps + ")");
+			lastFpsTime = 0;
+			fps = 0;
 		}
 	}
 
@@ -629,6 +667,6 @@ public class Game {
 	 * @return A sprite that can be drawn onto the current graphics context.
 	 */
 	public Sprite getSprite(String ref) {
-		return new Sprite(textureLoader, ref);
+		return new Sprite(textureLoader, "spaceinvaders/" + ref);
 	}
 }

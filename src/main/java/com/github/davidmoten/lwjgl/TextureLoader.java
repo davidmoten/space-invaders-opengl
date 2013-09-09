@@ -29,7 +29,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lwjgl.examples.spaceinvaders;
+package com.github.davidmoten.lwjgl;
 
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
 import static org.lwjgl.opengl.GL11.GL_RGB;
@@ -65,6 +65,7 @@ import java.util.Hashtable;
 import javax.swing.ImageIcon;
 
 import org.lwjgl.BufferUtils;
+
 
 /**
  * A utility class to load textures for OpenGL. This source is based on a
