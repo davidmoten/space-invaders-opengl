@@ -35,6 +35,7 @@ package com.github.davidmoten.spaceinvaders;
 import java.applet.Applet;
 
 import com.github.davidmoten.lwjgl.GameCore;
+import com.github.davidmoten.lwjgl.GameFactory;
 
 public class GameApplet extends Applet {
 
@@ -43,7 +44,14 @@ public class GameApplet extends Applet {
 	private final GameCore core;
 
 	public GameApplet() {
-		core = new GameCore(this, false);
+		GameFactory gameFactory = new GameFactory() {
+			@Override
+			public Runnable createGame() {
+				return new Game(false);
+			}
+
+		};
+		core = new GameCore(this, gameFactory);
 	}
 
 	/**

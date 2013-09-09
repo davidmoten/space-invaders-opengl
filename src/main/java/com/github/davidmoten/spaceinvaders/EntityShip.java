@@ -104,4 +104,9 @@ public class EntityShip extends Entity {
 			game.notifyDeath();
 		}
 	}
+
+	@Override
+	public void doLogic() {
+		// do nothing
+	}
 }

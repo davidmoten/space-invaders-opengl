@@ -20,13 +20,13 @@ public class GameCore {
 	private Thread gameThread;
 
 	/** The Game instance */
-	private Game game;
+	private Runnable game;
 
-	private final boolean fullScreen;
+	private final GameFactory gameFactory;
 
-	public GameCore(Container component, boolean fullScreen) {
+	public GameCore(Container component, GameFactory gameFactory) {
 		this.container = component;
-		this.fullScreen = fullScreen;
+		this.gameFactory = gameFactory;
 	}
 
 	public Canvas getDisplayParent() {
@@ -79,8 +79,8 @@ public class GameCore {
 					e.printStackTrace();
 				}
 				// start game
-				game = new Game(fullScreen);
-				game.execute();
+				game = gameFactory.createGame();
+				game.run();
 			}
 		};
 		gameThread.start();

@@ -33,7 +33,6 @@ package com.github.davidmoten.lwjgl;
 
 import java.awt.Rectangle;
 
-
 /**
  * An entity represents any element that appears in the game. The entity is
  * responsible for resolving collisions and movement based on a set of
@@ -147,8 +146,7 @@ public abstract class Entity {
 	 * Do the logic associated with this entity. This method will be called
 	 * periodically based on game events
 	 */
-	public void doLogic() {
-	}
+	public abstract void doLogic();
 
 	/**
 	 * Get the x location of this entity

@@ -16,6 +16,9 @@ To run as an application from the command line:
     cd space-invaders-opengl
     mvn test exec:java
     
+To start full screen:
+    mvn test exec:java -DfullScreen=true
+    
 To run in Eclipse as an applet:
 
 * Import the project into Eclipse using <i>File - Import - Maven - Existing projects</i>

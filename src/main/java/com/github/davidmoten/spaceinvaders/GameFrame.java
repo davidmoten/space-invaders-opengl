@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import com.github.davidmoten.lwjgl.GameCore;
+import com.github.davidmoten.lwjgl.GameFactory;
 
 public class GameFrame extends JFrame {
 
@@ -16,7 +17,17 @@ public class GameFrame extends JFrame {
 	public GameFrame(boolean fullScreen) {
 		setTitle("Space Invaders");
 		setSize(800, 600);
-		core = new GameCore(getContentPane(), fullScreen);
+		GameFactory gameFactory = new GameFactory() {
+			@Override
+			public Runnable createGame() {
+				return new Game(isFullScreen());
+			}
+
+			private boolean isFullScreen() {
+				return "true".equals(System.getProperty("fullScreen"));
+			}
+		};
+		core = new GameCore(getContentPane(), gameFactory);
 	}
 
 	public void start() {

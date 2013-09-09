@@ -128,4 +128,9 @@ public class EntityShot extends Entity {
 			used = true;
 		}
 	}
+
+	@Override
+	public void doLogic() {
+		// do nothing
+	}
 }

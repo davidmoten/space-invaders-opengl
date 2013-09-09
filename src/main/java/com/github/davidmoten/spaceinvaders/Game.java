@@ -85,7 +85,7 @@ import com.github.davidmoten.lwjgl.TextureLoader;
  * @author Kevin Glass
  * @author Brian Matzon
  */
-public class Game {
+public class Game implements Runnable {
 
 	/** The normal title of the window */
 	private final String WINDOW_TITLE = "Space Invaders 104 (for LWJGL)";
@@ -647,14 +647,15 @@ public class Game {
 		isApplication = true;
 		System.out.println("Use -fullscreen for fullscreen mode");
 		new Game((argv.length > 0 && "-fullscreen".equalsIgnoreCase(argv[0])))
-				.execute();
+				.run();
 		System.exit(0);
 	}
 
 	/**
 	 *
 	 */
-	public void execute() {
+	@Override
+	public void run() {
 		gameLoop();
 	}
 
