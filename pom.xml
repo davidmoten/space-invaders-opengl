@@ -4,7 +4,7 @@
 	<groupId>com.github.davidmoten</groupId>
 	<artifactId>space-invaders-opengl</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>${project.artifactID}</name>
+	<name>${project.artifactId}</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<natives.version>0.0.7</natives.version>
