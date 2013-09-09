@@ -272,11 +272,11 @@ public class Game {
 			soundManager.initialize(8);
 
 			// load our sound data
-			soundShot = soundManager.addSound("spaceinvaders/shot.wav");
-			soundHit = soundManager.addSound("spaceinvaders/hit.wav");
-			soundStart = soundManager.addSound("spaceinvaders/start.wav");
-			soundWin = soundManager.addSound("spaceinvaders/win.wav");
-			soundLose = soundManager.addSound("spaceinvaders/lose.wav");
+			soundShot = soundManager.addSound("spaceinvaders/sound/shot.wav");
+			soundHit = soundManager.addSound("spaceinvaders/sound/hit.wav");
+			soundStart = soundManager.addSound("spaceinvaders/sound/start.wav");
+			soundWin = soundManager.addSound("spaceinvaders/sound/win.wav");
+			soundLose = soundManager.addSound("spaceinvaders/sound/lose.wav");
 		} catch (LWJGLException le) {
 			System.out.println("Game exiting - exception in initialization:");
 			le.printStackTrace();
@@ -667,6 +667,6 @@ public class Game {
 	 * @return A sprite that can be drawn onto the current graphics context.
 	 */
 	public Sprite getSprite(String ref) {
-		return new Sprite(textureLoader, "spaceinvaders/" + ref);
+		return new Sprite(textureLoader, "spaceinvaders/image/" + ref);
 	}
 }
