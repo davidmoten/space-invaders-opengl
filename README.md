@@ -5,5 +5,5 @@ Copied from http://www.lwjgl.org/wiki/index.php?title=Space_Invaders_Example_Gam
 
 Import the project into eclipse using File - Import - Maven - Existing projects
 
-Then in Package Explorer select the class src/main/java/org.lwjgl.examples.spaceinvaders.GameAppletStandalone, right mouse button and run as applet.
+Then in Package Explorer select the <code>space-invaders-opengl</code> project, click right mouse button Run As - Applet.
 
