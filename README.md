@@ -18,7 +18,6 @@ To run as an application from the command line:
     
 To run in Eclipse as an applet:
 
-Import the project into eclipse using File - Import - Maven - Existing projects
-
-Then in Package Explorer select the <code>space-invaders-opengl</code> project, click right mouse button Run As - Applet.
+* Import the project into Eclipse using <i>File - Import - Maven - Existing projects</i>
+* Then in Package Explorer select the <code>space-invaders-opengl</code> project, click right mouse button and <i>Run As - Applet</i>.
 
