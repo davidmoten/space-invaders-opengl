@@ -169,19 +169,19 @@ public class Game {
 	private final boolean fullscreen;
 
 	/** ID of shot effect */
-	private int SOUND_SHOT;
+	private int soundShot;
 
 	/** ID of hit effect */
-	private int SOUND_HIT;
+	private int soundHit;
 
 	/** ID of start sound */
-	private int SOUND_START;
+	private int soundStart;
 
 	/** ID of win sound */
-	private int SOUND_WIN;
+	private int soundWin;
 
 	/** ID of loose sound */
-	private int SOUND_LOOSE;
+	private int soundLose;
 
 	/** Mouse movement on x axis */
 	private int mouseX;
@@ -267,11 +267,11 @@ public class Game {
 			soundManager.initialize(8);
 
 			// load our sound data
-			SOUND_SHOT = soundManager.addSound("shot.wav");
-			SOUND_HIT = soundManager.addSound("hit.wav");
-			SOUND_START = soundManager.addSound("start.wav");
-			SOUND_WIN = soundManager.addSound("win.wav");
-			SOUND_LOOSE = soundManager.addSound("loose.wav");
+			soundShot = soundManager.addSound("shot.wav");
+			soundHit = soundManager.addSound("hit.wav");
+			soundStart = soundManager.addSound("start.wav");
+			soundWin = soundManager.addSound("win.wav");
+			soundLose = soundManager.addSound("lose.wav");
 		} catch (LWJGLException le) {
 			System.out.println("Game exiting - exception in initialization:");
 			le.printStackTrace();
@@ -378,7 +378,7 @@ public class Game {
 	 */
 	public void notifyDeath() {
 		if (!waitingForKeyPress) {
-			soundManager.playSound(SOUND_LOOSE);
+			soundManager.playSound(soundLose);
 		}
 		message = gotYou;
 		waitingForKeyPress = true;
@@ -390,7 +390,7 @@ public class Game {
 	public void notifyWin() {
 		message = youWin;
 		waitingForKeyPress = true;
-		soundManager.playSound(SOUND_WIN);
+		soundManager.playSound(soundWin);
 	}
 
 	/**
@@ -414,7 +414,7 @@ public class Game {
 			}
 		}
 
-		soundManager.playEffect(SOUND_HIT);
+		soundManager.playEffect(soundHit);
 	}
 
 	/**
@@ -435,7 +435,7 @@ public class Game {
 		shot.reinitialize(ship.getX() + 10, ship.getY() - 30);
 		entities.add(shot);
 
-		soundManager.playEffect(SOUND_SHOT);
+		soundManager.playEffect(soundShot);
 	}
 
 	/**
@@ -568,7 +568,7 @@ public class Game {
 				waitingForKeyPress = false;
 				fireHasBeenReleased = false;
 				startGame();
-				soundManager.playSound(SOUND_START);
+				soundManager.playSound(soundStart);
 			}
 		}
 
