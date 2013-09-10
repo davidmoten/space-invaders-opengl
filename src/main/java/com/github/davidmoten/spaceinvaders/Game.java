@@ -655,6 +655,10 @@ public class Game implements Runnable {
 		return new Sprite(textureLoader, "spaceinvaders/image/" + ref);
 	}
 
+	public static enum Mode {
+		APPLICATION, APPLET;
+	}
+
 	/**
 	 * The entry point into the game. We'll simply create an instance of class
 	 * which will start the display and game loop.
@@ -670,7 +674,4 @@ public class Game implements Runnable {
 		System.exit(0);
 	}
 
-	public static enum Mode {
-		APPLICATION, APPLET;
-	}
 }
