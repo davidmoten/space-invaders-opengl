@@ -190,6 +190,8 @@ public class Game implements Runnable {
 	/** ID of loose sound */
 	private Sound soundLose;
 
+	private final Sprite background;
+
 	/**
 	 * Construct our game and set it running.
 	 * 
@@ -241,7 +243,7 @@ public class Game implements Runnable {
 		gotYou = getSprite("gotyou.gif");
 		pressAnyKey = getSprite("pressanykey.gif");
 		youWin = getSprite("youwin.gif");
-
+		background = getSprite("background.jpg");
 		message = pressAnyKey;
 
 		// setup 5 shots
@@ -475,6 +477,8 @@ public class Game implements Runnable {
 		// move entities by time delta
 		moveEntities(delta);
 
+		drawBackground();
+
 		// draw the entities using OpenGL
 		drawEntities();
 
@@ -491,6 +495,10 @@ public class Game implements Runnable {
 
 		// process key presses and mouse movements and presses
 		handleKeyboardAndMouseInput();
+	}
+
+	private void drawBackground() {
+		background.draw(0, 0);
 	}
 
 	private long calculateTimeDelta() {
