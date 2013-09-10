@@ -76,7 +76,11 @@ public class SoundManager {
 	 * @param buffer
 	 *            Buffer index to play gotten from addSound
 	 */
-	public void playEffect(int buffer) {
+	public void playEffect(Sound sound) {
+		playEffect(sound.getSoundIndex());
+	}
+
+	private void playEffect(int buffer) {
 		if (soundOutput) {
 			// make sure we never choose last channel, since it is used for
 			// special sounds
@@ -88,13 +92,17 @@ public class SoundManager {
 		}
 	}
 
+	public void playSound(Sound sound) {
+		playSound(sound.getSoundIndex());
+	}
+
 	/**
 	 * Plays a sound on last source
 	 * 
 	 * @param buffer
 	 *            Buffer index to play gotten from addSound
 	 */
-	public void playSound(int buffer) {
+	private void playSound(int buffer) {
 		if (soundOutput) {
 			AL10.alSourcei(sources[sources.length - 1], AL10.AL_BUFFER,
 					buffers[buffer]);
@@ -149,7 +157,7 @@ public class SoundManager {
 	 *            Path to file to load
 	 * @return index into SoundManagers buffer list
 	 */
-	public int addSound(String path) {
+	public Sound addSound(String path) {
 		// Generate 1 buffer entry
 		scratchBuffer.rewind().position(0).limit(1);
 		AL10.alGenBuffers(scratchBuffer);
@@ -166,7 +174,7 @@ public class SoundManager {
 		wavefile.dispose();
 
 		// return index for this sound
-		return bufferIndex++;
+		return new Sound(bufferIndex++);
 	}
 
 	/**
@@ -192,4 +200,5 @@ public class SoundManager {
 			AL.destroy();
 		}
 	}
+
 }

@@ -55,6 +55,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
 import com.github.davidmoten.lwjgl.Entity;
+import com.github.davidmoten.lwjgl.Sound;
 import com.github.davidmoten.lwjgl.SoundManager;
 import com.github.davidmoten.lwjgl.Sprite;
 import com.github.davidmoten.lwjgl.TextureLoader;
@@ -159,6 +160,7 @@ public class Game implements Runnable {
 	 */
 	private long lastLoopTime = getTime();
 
+	// TODO make a local variable
 	/** True if the fire key has been released */
 	private boolean fireHasBeenReleased;
 
@@ -172,22 +174,19 @@ public class Game implements Runnable {
 	private final SoundManager soundManager;
 
 	/** ID of shot effect */
-	private int soundShot;
+	private Sound soundShot;
 
 	/** ID of hit effect */
-	private int soundHit;
+	private Sound soundHit;
 
 	/** ID of start sound */
-	private int soundStart;
+	private Sound soundStart;
 
 	/** ID of win sound */
-	private int soundWin;
+	private Sound soundWin;
 
 	/** ID of loose sound */
-	private int soundLose;
-
-	/** Mouse movement on x axis */
-	private int mouseX;
+	private Sound soundLose;
 
 	/**
 	 * Construct our game and set it running.
@@ -523,7 +522,7 @@ public class Game implements Runnable {
 		// get mouse movement on x axis. We need to get it now, since
 		// we can only call getDX ONCE! - secondary calls will yield 0, since
 		// there haven't been any movement since last call.
-		mouseX = Mouse.getDX();
+		int mouseX = Mouse.getDX();
 
 		// resolve the movement of the ship. First assume the ship
 		// isn't moving. If either cursor key is pressed then
@@ -532,9 +531,9 @@ public class Game implements Runnable {
 
 		// we delegate input checking to submethod since we want to check
 		// for keyboard, mouse & controller
-		boolean leftPressed = hasInput(Keyboard.KEY_LEFT);
-		boolean rightPressed = hasInput(Keyboard.KEY_RIGHT);
-		boolean firePressed = hasInput(Keyboard.KEY_SPACE);
+		boolean leftPressed = hasInput(Keyboard.KEY_LEFT, mouseX);
+		boolean rightPressed = hasInput(Keyboard.KEY_RIGHT, mouseX);
+		boolean firePressed = hasInput(Keyboard.KEY_SPACE, mouseX);
 
 		if (!waitingForKeyPress && !soundManager.isPlayingSound()) {
 			if ((leftPressed) && (!rightPressed)) {
@@ -621,7 +620,7 @@ public class Game implements Runnable {
 	 * @param direction
 	 * @return
 	 */
-	private boolean hasInput(int direction) {
+	private boolean hasInput(int direction, int mouseX) {
 		switch (direction) {
 		case Keyboard.KEY_LEFT:
 			return Keyboard.isKeyDown(Keyboard.KEY_LEFT) || mouseX < 0;
