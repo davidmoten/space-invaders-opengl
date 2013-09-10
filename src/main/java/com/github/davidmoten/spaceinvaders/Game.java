@@ -97,16 +97,13 @@ public class Game implements Runnable {
 	private final int height = 600;
 
 	/** The loader responsible for converting images into OpenGL textures */
-	private TextureLoader textureLoader;
+	private final TextureLoader textureLoader;
 
 	/** The list of all the entities that exist in our game */
 	private final ArrayList<Entity> entities = new ArrayList<Entity>();
 
 	/** The list of entities that need to be removed from the game this loop */
 	private final ArrayList<Entity> removeList = new ArrayList<Entity>();
-
-	/** The entity representing the player */
-	private EntityShip ship;
 
 	/** List of shots */
 	private final EntityShot[] shots;
@@ -122,6 +119,9 @@ public class Game implements Runnable {
 
 	/** The sprite containing the "You lose!" message */
 	private final Sprite gotYou;
+
+	/** Is this an application or applet */
+	private final Mode mode;
 
 	/** Last shot index */
 	private int shotIndex;
@@ -140,6 +140,9 @@ public class Game implements Runnable {
 
 	/** True if we're holding up game play until a key has been pressed */
 	private boolean waitingForKeyPress = true;
+
+	/** The entity representing the player */
+	private EntityShip ship;
 
 	/**
 	 * True if game logic needs to be applied this loop, normally as a result of
@@ -162,10 +165,10 @@ public class Game implements Runnable {
 	/** The recorded fps */
 	private int fps;
 
-	private static long timerTicksPerSecond = Sys.getTimerResolution();
+	private static final long TIMER_TICKS_PER_SECOND = Sys.getTimerResolution();
 
 	/** SoundManager to make sound with */
-	private SoundManager soundManager;
+	private final SoundManager soundManager;
 
 	private final boolean fullscreen;
 
@@ -187,16 +190,14 @@ public class Game implements Runnable {
 	/** Mouse movement on x axis */
 	private int mouseX;
 
-	/** Is this an application or applet */
-	private static boolean isApplication;
-
 	/**
 	 * Construct our game and set it running.
 	 * 
 	 * @param fullscreen
 	 * 
 	 */
-	public Game(boolean fullscreen) {
+	public Game(Mode mode, boolean fullscreen) {
+		this.mode = mode;
 		this.fullscreen = fullscreen;
 
 		// initialize the window beforehand
@@ -208,7 +209,7 @@ public class Game implements Runnable {
 
 			// grab the mouse, don't want that hideous cursor when we're
 			// playing!
-			if (isApplication) {
+			if (Mode.APPLICATION.equals(mode)) {
 				Mouse.setGrabbed(true);
 			}
 
@@ -276,7 +277,7 @@ public class Game implements Runnable {
 		// multiply by 1000 so our end result is in milliseconds
 		// then divide by the number of ticks in a second giving
 		// us a nice clear time in milliseconds
-		return (Sys.getTime() * 1000) / timerTicksPerSecond;
+		return (Sys.getTime() * 1000) / TIMER_TICKS_PER_SECOND;
 	}
 
 	/**
@@ -559,7 +560,8 @@ public class Game implements Runnable {
 
 		// if escape has been pressed, stop the game
 		if ((Display.isCloseRequested() || Keyboard
-				.isKeyDown(Keyboard.KEY_ESCAPE)) && isApplication) {
+				.isKeyDown(Keyboard.KEY_ESCAPE))
+				&& Mode.APPLICATION.equals(mode)) {
 			stopGame();
 		}
 	}
@@ -660,10 +662,14 @@ public class Game implements Runnable {
 	 *            The arguments that are passed into our game
 	 */
 	public static void main(String argv[]) {
-		isApplication = true;
 		System.out.println("Use -fullscreen for fullscreen mode");
-		new Game((argv.length > 0 && "-fullscreen".equalsIgnoreCase(argv[0])))
+		new Game(Mode.APPLICATION,
+				(argv.length > 0 && "-fullscreen".equalsIgnoreCase(argv[0])))
 				.run();
 		System.exit(0);
+	}
+
+	public static enum Mode {
+		APPLICATION, APPLET;
 	}
 }

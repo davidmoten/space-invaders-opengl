@@ -7,6 +7,7 @@ import javax.swing.SwingUtilities;
 
 import com.github.davidmoten.lwjgl.GameCore;
 import com.github.davidmoten.lwjgl.GameFactory;
+import com.github.davidmoten.spaceinvaders.Game.Mode;
 
 public class GameFrame extends JFrame {
 
@@ -20,7 +21,7 @@ public class GameFrame extends JFrame {
 		GameFactory gameFactory = new GameFactory() {
 			@Override
 			public Runnable createGame() {
-				return new Game(isFullScreen());
+				return new Game(Mode.APPLICATION, isFullScreen());
 			}
 
 			private boolean isFullScreen() {
