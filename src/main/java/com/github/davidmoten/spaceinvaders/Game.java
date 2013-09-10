@@ -109,19 +109,19 @@ public class Game implements Runnable {
 	private EntityShip ship;
 
 	/** List of shots */
-	private EntityShot[] shots;
+	private final EntityShot[] shots;
 
 	/** The message to display which waiting for a key press */
 	private Sprite message;
 
 	/** The sprite containing the "Press Any Key" message */
-	private Sprite pressAnyKey;
+	private final Sprite pressAnyKey;
 
 	/** The sprite containing the "You win!" message */
-	private Sprite youWin;
+	private final Sprite youWin;
 
 	/** The sprite containing the "You lose!" message */
-	private Sprite gotYou;
+	private final Sprite gotYou;
 
 	/** Last shot index */
 	private int shotIndex;
@@ -164,13 +164,9 @@ public class Game implements Runnable {
 
 	private static long timerTicksPerSecond = Sys.getTimerResolution();
 
-	/** True if the game is currently "running", i.e. the game loop is looping */
-	public static boolean gameRunning = true;
-
 	/** SoundManager to make sound with */
 	private SoundManager soundManager;
 
-	/** Whether we're running in fullscreen mode */
 	private final boolean fullscreen;
 
 	/** ID of shot effect */
@@ -202,39 +198,7 @@ public class Game implements Runnable {
 	 */
 	public Game(boolean fullscreen) {
 		this.fullscreen = fullscreen;
-		initialize();
-	}
 
-	/**
-	 * Get the high resolution time in milliseconds
-	 * 
-	 * @return The high resolution time in milliseconds
-	 */
-	public static long getTime() {
-		// we get the "timer ticks" from the high resolution timer
-		// multiply by 1000 so our end result is in milliseconds
-		// then divide by the number of ticks in a second giving
-		// us a nice clear time in milliseconds
-		return (Sys.getTime() * 1000) / timerTicksPerSecond;
-	}
-
-	/**
-	 * Sleep for a fixed number of milliseconds.
-	 * 
-	 * @param duration
-	 *            The amount of time in milliseconds to sleep for
-	 */
-	public static void sleep(long duration) {
-		try {
-			Thread.sleep((duration * timerTicksPerSecond) / 1000);
-		} catch (InterruptedException inte) {
-		}
-	}
-
-	/**
-	 * Intialise the common elements for the game
-	 */
-	public void initialize() {
 		// initialize the window beforehand
 		try {
 			setDisplayMode();
@@ -279,11 +243,10 @@ public class Game implements Runnable {
 			soundStart = soundManager.addSound(base + "start.wav");
 			soundWin = soundManager.addSound(base + "win.wav");
 			soundLose = soundManager.addSound(base + "lose.wav");
-		} catch (LWJGLException le) {
+		} catch (LWJGLException e) {
 			System.out.println("Game exiting - exception in initialization:");
-			le.printStackTrace();
-			Game.gameRunning = false;
-			return;
+			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 
 		// get sprites
@@ -301,6 +264,19 @@ public class Game implements Runnable {
 
 		// setup the initial game state
 		startGame();
+	}
+
+	/**
+	 * Get the high resolution time in milliseconds
+	 * 
+	 * @return The high resolution time in milliseconds
+	 */
+	private static long getTime() {
+		// we get the "timer ticks" from the high resolution timer
+		// multiply by 1000 so our end result is in milliseconds
+		// then divide by the number of ticks in a second giving
+		// us a nice clear time in milliseconds
+		return (Sys.getTime() * 1000) / timerTicksPerSecond;
 	}
 
 	/**
@@ -450,11 +426,10 @@ public class Game implements Runnable {
 	 * requesting that the callback update its screen.
 	 */
 	private void gameLoop() {
-		while (Game.gameRunning) {
+		while (keepGoing()) {
+
 			// clear screen
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
+			clearScreen();
 
 			// let subsystem paint
 			renderFrame();
@@ -466,6 +441,16 @@ public class Game implements Runnable {
 		// clean up
 		soundManager.destroy();
 		Display.destroy();
+	}
+
+	private void clearScreen() {
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+	}
+
+	private boolean keepGoing() {
+		return !Thread.currentThread().isInterrupted();
 	}
 
 	/**
@@ -575,8 +560,12 @@ public class Game implements Runnable {
 		// if escape has been pressed, stop the game
 		if ((Display.isCloseRequested() || Keyboard
 				.isKeyDown(Keyboard.KEY_ESCAPE)) && isApplication) {
-			Game.gameRunning = false;
+			stopGame();
 		}
+	}
+
+	private void stopGame() {
+		Thread.currentThread().interrupt();
 	}
 
 	private void handleEntityCollisions() {

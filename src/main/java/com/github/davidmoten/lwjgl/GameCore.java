@@ -7,8 +7,6 @@ import java.awt.Container;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 
-import com.github.davidmoten.spaceinvaders.Game;
-
 public class GameCore {
 
 	private final Container container;
@@ -92,7 +90,7 @@ public class GameCore {
 	 * complete
 	 */
 	private void stopLWJGL() {
-		Game.gameRunning = false;
+		gameThread.interrupt();
 		try {
 			gameThread.join();
 		} catch (InterruptedException e) {
