@@ -13,7 +13,7 @@ public class GameFrame extends JFrame {
 
 	private static final long serialVersionUID = 3243493114596654127L;
 	private static final String LWJGL_LIBRARY_PATH = "org.lwjgl.librarypath";
-	private final GameManager core;
+	private final GameManager manager;
 
 	public GameFrame() {
 		setTitle("Space Invaders");
@@ -28,11 +28,11 @@ public class GameFrame extends JFrame {
 				return "true".equals(System.getProperty("fullScreen"));
 			}
 		};
-		core = new GameManager(getContentPane(), gameFactory);
+		manager = new GameManager(getContentPane(), gameFactory);
 	}
 
 	public void start() {
-		core.start();
+		manager.start();
 	}
 
 	public static void main(String[] args) {
