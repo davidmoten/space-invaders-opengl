@@ -84,6 +84,7 @@ import com.github.davidmoten.lwjgl.TextureLoader;
  * 
  * @author Kevin Glass
  * @author Brian Matzon
+ * @author Dave Moten
  */
 public class Game implements Runnable {
 
@@ -95,6 +96,8 @@ public class Game implements Runnable {
 
 	/** The height of the game display area */
 	private final int height = 600;
+
+	private static final long TIMER_TICKS_PER_SECOND = Sys.getTimerResolution();
 
 	/** The loader responsible for converting images into OpenGL textures */
 	private final TextureLoader textureLoader;
@@ -123,17 +126,17 @@ public class Game implements Runnable {
 	/** Is this an application or applet */
 	private final Mode mode;
 
-	/** Last shot index */
-	private int shotIndex;
-
 	/** The speed at which the player's ship should move (pixels/sec) */
 	private final float moveSpeed = 300;
 
-	/** The time at which last fired a shot */
-	private long lastFire;
-
 	/** The interval between our players shot (ms) */
 	private final long firingInterval = 500;
+
+	/** Last shot index */
+	private int shotIndex;
+
+	/** The time at which last fired a shot */
+	private long lastFire;
 
 	/** The number of aliens left on the screen */
 	private int alienCount;
@@ -165,12 +168,8 @@ public class Game implements Runnable {
 	/** The recorded fps */
 	private int fps;
 
-	private static final long TIMER_TICKS_PER_SECOND = Sys.getTimerResolution();
-
 	/** SoundManager to make sound with */
 	private final SoundManager soundManager;
-
-	private final boolean fullscreen;
 
 	/** ID of shot effect */
 	private int soundShot;
@@ -198,7 +197,6 @@ public class Game implements Runnable {
 	 */
 	public Game(Mode mode, boolean fullscreen) {
 		this.mode = mode;
-		this.fullscreen = fullscreen;
 
 		// initialize the window beforehand
 		try {
@@ -213,19 +211,7 @@ public class Game implements Runnable {
 				Mouse.setGrabbed(true);
 			}
 
-			// enable textures since we're going to use these for our sprites
-			glEnable(GL_TEXTURE_2D);
-
-			// disable the OpenGL depth test since we're rendering 2D graphics
-			glDisable(GL_DEPTH_TEST);
-
-			glMatrixMode(GL_PROJECTION);
-			glLoadIdentity();
-
-			glOrtho(0, width, height, 0, -1, 1);
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
-			glViewport(0, 0, width, height);
+			initializeOpenGL();
 
 			textureLoader = new TextureLoader();
 
@@ -238,7 +224,7 @@ public class Game implements Runnable {
 			soundManager.initialize(8);
 
 			// load sound data
-			String base = "spaceinvaders/sound/";
+			final String base = "spaceinvaders/sound/";
 			soundShot = soundManager.addSound(base + "shot.wav");
 			soundHit = soundManager.addSound(base + "hit.wav");
 			soundStart = soundManager.addSound(base + "start.wav");
@@ -265,6 +251,22 @@ public class Game implements Runnable {
 
 		// setup the initial game state
 		startGame();
+	}
+
+	private void initializeOpenGL() {
+		// enable textures since we're going to use these for our sprites
+		glEnable(GL_TEXTURE_2D);
+
+		// disable the OpenGL depth test since we're rendering 2D graphics
+		glDisable(GL_DEPTH_TEST);
+
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+
+		glOrtho(0, width, height, 0, -1, 1);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		glViewport(0, 0, width, height);
 	}
 
 	/**
@@ -455,8 +457,8 @@ public class Game implements Runnable {
 	}
 
 	/**
-	 * Notification that a frame is being rendered. Responsible for running game
-	 * logic and rendering the scene.
+	 * Renders the frame. Responsible for running game logic and rendering the
+	 * scene.
 	 */
 	public void renderFrame() {
 		Display.sync(60);

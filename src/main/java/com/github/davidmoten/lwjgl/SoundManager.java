@@ -71,12 +71,6 @@ public class SoundManager {
 	private int sourceIndex;
 
 	/**
-	 * Creates a new SoundManager
-	 */
-	public SoundManager() {
-	}
-
-	/**
 	 * Plays a sound effect
 	 * 
 	 * @param buffer
