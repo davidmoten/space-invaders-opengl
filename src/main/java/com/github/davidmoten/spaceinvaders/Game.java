@@ -89,6 +89,8 @@ import com.github.davidmoten.lwjgl.TextureLoader;
  */
 public class Game implements Runnable {
 
+	private static final String IMAGE_HOME = "spaceinvaders/image/";
+
 	/** The normal title of the window */
 	private final String WINDOW_TITLE = "Space Invaders 104 (for LWJGL)";
 
@@ -372,7 +374,7 @@ public class Game implements Runnable {
 	/**
 	 * Notification that the player has won since all the aliens are dead.
 	 */
-	public void notifyWin() {
+	private void notifyWin() {
 		message = youWin;
 		waitingForKeyPress = true;
 		soundManager.playSound(soundWin);
@@ -407,7 +409,7 @@ public class Game implements Runnable {
 	 * first check that the player can fire at this point, i.e. has he/she
 	 * waited long enough between shots
 	 */
-	public void tryToFire() {
+	private void tryToFire() {
 		// check that we have waiting long enough to fire
 		if (System.currentTimeMillis() - lastFire < firingInterval) {
 			return;
@@ -459,7 +461,7 @@ public class Game implements Runnable {
 	 * Renders the frame. Responsible for running game logic and rendering the
 	 * scene.
 	 */
-	public void renderFrame() {
+	private void renderFrame() {
 		Display.sync(60);
 
 		// work out how long its been since the last update, this
@@ -652,7 +654,7 @@ public class Game implements Runnable {
 	 * @return A sprite that can be drawn onto the current graphics context.
 	 */
 	public Sprite getSprite(String ref) {
-		return new Sprite(textureLoader, "spaceinvaders/image/" + ref);
+		return new Sprite(textureLoader, IMAGE_HOME + ref);
 	}
 
 	public static enum Mode {
