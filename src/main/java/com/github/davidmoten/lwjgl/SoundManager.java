@@ -73,13 +73,19 @@ public class SoundManager {
 	/**
 	 * Plays a sound effect
 	 * 
-	 * @param buffer
-	 *            Buffer index to play gotten from addSound
+	 * @param sound
+	 *            sound to play
 	 */
 	public void playEffect(Sound sound) {
 		playEffect(sound.getSoundIndex());
 	}
 
+	/**
+	 * Plays a sound effect.
+	 * 
+	 * @param buffer
+	 *            Buffer index to play gotten from addSound
+	 */
 	private void playEffect(int buffer) {
 		if (soundOutput) {
 			// make sure we never choose last channel, since it is used for
@@ -92,6 +98,11 @@ public class SoundManager {
 		}
 	}
 
+	/**
+	 * Plays a sound.
+	 * 
+	 * @param sound
+	 */
 	public void playSound(Sound sound) {
 		playSound(sound.getSoundIndex());
 	}
