@@ -5,7 +5,7 @@ import java.io.File;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import com.github.davidmoten.lwjgl.GameCore;
+import com.github.davidmoten.lwjgl.GameManager;
 import com.github.davidmoten.lwjgl.GameFactory;
 import com.github.davidmoten.spaceinvaders.Game.Mode;
 
@@ -13,7 +13,7 @@ public class GameFrame extends JFrame {
 
 	private static final long serialVersionUID = 3243493114596654127L;
 	private static final String LWJGL_LIBRARY_PATH = "org.lwjgl.librarypath";
-	private final GameCore core;
+	private final GameManager core;
 
 	public GameFrame() {
 		setTitle("Space Invaders");
@@ -28,7 +28,7 @@ public class GameFrame extends JFrame {
 				return "true".equals(System.getProperty("fullScreen"));
 			}
 		};
-		core = new GameCore(getContentPane(), gameFactory);
+		core = new GameManager(getContentPane(), gameFactory);
 	}
 
 	public void start() {

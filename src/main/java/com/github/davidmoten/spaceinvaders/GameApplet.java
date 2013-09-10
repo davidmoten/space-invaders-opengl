@@ -34,7 +34,7 @@ package com.github.davidmoten.spaceinvaders;
 
 import java.applet.Applet;
 
-import com.github.davidmoten.lwjgl.GameCore;
+import com.github.davidmoten.lwjgl.GameManager;
 import com.github.davidmoten.lwjgl.GameFactory;
 import com.github.davidmoten.spaceinvaders.Game.Mode;
 
@@ -42,7 +42,7 @@ public class GameApplet extends Applet {
 
 	private static final long serialVersionUID = 2639530711071685417L;
 
-	private final GameCore core;
+	private final GameManager manager;
 
 	public GameApplet() {
 		GameFactory gameFactory = new GameFactory() {
@@ -52,7 +52,7 @@ public class GameApplet extends Applet {
 			}
 
 		};
-		core = new GameCore(this, gameFactory);
+		manager = new GameManager(this, gameFactory);
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class GameApplet extends Applet {
 	 */
 	@Override
 	public void init() {
-		core.start();
+		manager.start();
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class GameApplet extends Applet {
 	 */
 	@Override
 	public void destroy() {
-		core.cleanUp();
+		manager.cleanUp();
 		super.destroy();
 	}
 

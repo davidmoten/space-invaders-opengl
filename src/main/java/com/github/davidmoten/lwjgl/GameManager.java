@@ -7,7 +7,7 @@ import java.awt.Container;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 
-public class GameCore {
+public class GameManager {
 
 	private final Container container;
 
@@ -22,7 +22,7 @@ public class GameCore {
 
 	private final GameFactory gameFactory;
 
-	public GameCore(Container component, GameFactory gameFactory) {
+	public GameManager(Container component, GameFactory gameFactory) {
 		this.container = component;
 		this.gameFactory = gameFactory;
 	}
